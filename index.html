@@ -121,34 +121,57 @@
     <main>
         <!-- Hero Section -->
         <section id="home" class="relative min-h-[70vh] md:min-h-screen flex items-center justify-center text-center px-6 py-24 overflow-hidden">
-            <!-- Background Image -->
-            <div class="absolute inset-0 z-0">
-                <img src="https://placehold.co/1920x1080/2D3748/1A202C" 
-                     onerror="this.src='https://placehold.co/1920x1080/2D3748/1A202C?text=Building+Future'"
-                     alt="Construction background" class="w-full h-full object-cover">
-                <!-- Overlay -->
-                <div class="absolute inset-0 bg-gray-100/70 backdrop-blur-sm"></div>
-                <!-- Watermark Logo -->
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png" alt="Blacksmith Construction Watermark" class="w-1/4 md:w-1/6 opacity-50">
-                </div>
-            </div>
-            
-            <!-- Hero Content -->
-            <div class="relative z-10">
-                
-                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 drop-shadow-md">
-                    Building Your Vision
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-900 max-w-3xl mb-8 drop-shadow-sm">
-                    From concept to completion, Blacksmith Construction delivers quality, craftsmanship, and reliability you can trust.
-                </p>
-                <!-- Button moved out of the div and positioned absolutely -->
-            </div>
-            
-            <a href="#contact" class="absolute z-8 bottom-8 sm:bottom-16 left-1/2 -translate-x-1/2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300 shadow-lg transform hover:scale-105">
-                Start Your Project Today
-            </a>
+  <!-- Background Image -->
+  <div class="absolute inset-0 z-0">
+    <img src="https://placehold.co/1920x1080/2D3748/1A202C" 
+         onerror="this.src='https://placehold.co/1920x1080/2D3748/1A202C?text=Building+Future'"
+         alt="Construction background" class="w-full h-full object-cover">
+    <!-- Soft gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/70 md:from-white/50 md:via-white/30 md:to-white/60"></div>
+    <!-- Subtle vignette -->
+    <div class="absolute inset-0 pointer-events-none [background:radial-gradient(60%_60%_at_50%_40%,rgba(0,0,0,0.15),transparent)]"></div>
+    <!-- Watermark Logo -->
+    <div class="absolute inset-0 flex items-center justify-center">
+      <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png" alt="Blacksmith Construction Watermark" class="w-1/4 md:w-1/6 opacity-40">
+    </div>
+  </div>
+
+  <!-- Hero Content (glass card) -->
+  <div class="relative z-10 max-w-3xl mx-auto bg-white/60 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl border border-white/60">
+    <!-- Eyebrow -->
+    <span class="inline-flex items-center gap-2 text-sm md:text-base text-gray-700 bg-white/70 px-3 py-1 rounded-full border border-white/60 shadow-sm mb-4">
+      Phoenix Metro • Custom Builds & Remodels
+    </span>
+
+    <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 drop-shadow-sm">
+      Building Your Vision
+    </h1>
+    <p class="text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto">
+      From concept to completion, Blacksmith Construction delivers quality, craftsmanship, and reliability you can trust.
+    </p>
+
+    <!-- CTAs -->
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#contact" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300 shadow-lg transform hover:scale-105" aria-label="Start your project today">
+        Start Your Project Today
+      </a>
+      <a href="#gallery" class="bg-white/70 hover:bg-white text-gray-900 font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 border border-gray-200 shadow-sm" aria-label="See our work">
+        See Our Work
+      </a>
+    </div>
+
+    <!-- Trust line -->
+    <p class="mt-4 text-sm md:text-base text-gray-600">
+      Licensed • Bonded • Insured <!-- • ROC ###### -->
+    </p>
+  </div>
+
+  <!-- Scroll cue -->
+  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-gray-700/70 animate-bounce">
+    <i data-lucide="chevron-down" class="w-6 h-6"></i>
+  </div>
+</section>
+
         </section>
 
         <!-- Services Section -->
