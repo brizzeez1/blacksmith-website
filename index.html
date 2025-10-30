@@ -784,28 +784,51 @@ function startCarousels() {
   });
 }
 
-// 🆕 Add this right here — bounce the watermark logo
+// 🆕 Perpetual background bounce for the hero watermark (not clickable)
 function bounceHeroWatermark() {
   const hero = document.getElementById('home');
   const img = document.getElementById('hero-watermark');
   if (!hero || !img) return;
 
+  // Make it non-interactive and keep it behind the glass (z-index under z-10)
   img.style.position = 'absolute';
+  img.style.pointerEvents = 'none';
+  img.style.userSelect = 'none';
   img.style.willChange = 'transform';
-  img.classList.add('z-20'); // bring in front
+  img.style.zIndex = '0'; // stays behind the hero glass (which is z-10)
 
-  const bounds = hero.getBoundingClientRect();
-  const imgRect = img.getBoundingClientRect();
-  const maxX = bounds.width  - imgRect.width;
-  const maxY = bounds.height - imgRect.height;
+  // Compute bounds relative to the hero section
+  let bounds = hero.getBoundingClientRect();
+  let imgRect = img.getBoundingClientRect();
 
+  // Movement limits
+  let maxX = bounds.width  - imgRect.width;
+  let maxY = bounds.height - imgRect.height;
+
+  // Start roughly centered
   let x = (bounds.width  - imgRect.width)  / 2;
   let y = (bounds.height - imgRect.height) / 2;
-  let vx = 120; // horizontal speed
-  let vy = 90;  // vertical speed
+
+  // Slow, gentle motion (px/s)
+  let vx = 80;  // horizontal speed
+  let vy = 60;  // vertical speed
+
+  // Recalculate bounds on resize to keep it inside the hero
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      bounds = hero.getBoundingClientRect();
+      imgRect = img.getBoundingClientRect();
+      maxX = Math.max(0, bounds.width  - imgRect.width);
+      maxY = Math.max(0, bounds.height - imgRect.height);
+      // clamp current position inside new bounds
+      x = Math.min(Math.max(0, x), maxX);
+      y = Math.min(Math.max(0, y), maxY);
+    }, 150);
+  });
 
   let last = performance.now();
-  const start = last;
 
   function step(now) {
     const dt = (now - last) / 1000;
@@ -814,21 +837,15 @@ function bounceHeroWatermark() {
     x += vx * dt;
     y += vy * dt;
 
-    if (x <= 0)   { x = 0;   vx = Math.abs(vx); }
-    if (x >= maxX){ x = maxX; vx = -Math.abs(vx); }
-    if (y <= 0)   { y = 0;   vy = Math.abs(vy); }
-    if (y >= maxY){ y = maxY; vy = -Math.abs(vy); }
+    // Bounce off the container edges
+    if (x <= 0)      { x = 0;      vx = Math.abs(vx); }
+    if (x >= maxX)   { x = maxX;   vx = -Math.abs(vx); }
+    if (y <= 0)      { y = 0;      vy = Math.abs(vy); }
+    if (y >= maxY)   { y = maxY;   vy = -Math.abs(vy); }
 
     img.style.transform = `translate(${x}px, ${y}px)`;
 
-    if (now - start < 5000) {
-      requestAnimationFrame(step);
-    } else {
-      img.classList.remove('z-20');
-      img.style.transform = '';
-      img.style.position = '';
-      img.style.willChange = '';
-    }
+    requestAnimationFrame(step); // keep going forever
   }
 
   requestAnimationFrame(step);
@@ -836,10 +853,11 @@ function bounceHeroWatermark() {
 
 // call your carousels and bouncing logo when ready
 startCarousels();
-setTimeout(bounceHeroWatermark, 600);
+setTimeout(bounceHeroWatermark, 600); // small delay so layout is settled
 
 // Initialize Lucide Icons
 lucide.createIcons();
+
 });
 </script>
 
