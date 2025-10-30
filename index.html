@@ -701,17 +701,20 @@ function jsonp(url, params = {}) {
 
 // Uses GAS JSONP endpoint (no CORS)
 async function callGeminiAPI(systemPrompt, userQuery) {
-  const res = await jsonp(`${GAS_BASE}?route=ai-ideas`, { systemPrompt, userQuery });
+  // systemPrompt is now ignored; prompt is baked server-side
+  const res = await jsonp(`${GAS_BASE}?route=ai-ideas`, { userQuery });
   if (!res || res.ok === false) throw new Error(res?.error || 'AI request failed');
   return res.html;
 }
 
 // Uses GAS JSONP endpoint (no CORS)
 async function callGeminiTTSAPI(textToSpeak) {
-  const res = await jsonp(`${GAS_BASE}?route=tts`, { text: textToSpeak });
+  const text = textToSpeak.slice(0, 1200); // keep URL small
+  const res = await jsonp(`${GAS_BASE}?route=tts`, { text });
   if (!res || res.ok === false) throw new Error(res?.error || 'TTS request failed');
   return { audioData: res.audioData, mimeType: res.mimeType };
 }
+
 
     // === END of replacements ===
     
