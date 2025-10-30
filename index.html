@@ -687,46 +687,55 @@ function bounceHeroWatermark() {
   const img = document.getElementById('hero-watermark');
   if (!hero || !img) return;
 
-  // Make it non-interactive and keep it behind the glass (z-index under z-10)
+  // Make it non-interactive and behind the glass
   img.style.position = 'absolute';
   img.style.pointerEvents = 'none';
   img.style.userSelect = 'none';
   img.style.willChange = 'transform';
-  img.style.zIndex = '0'; // stays behind the hero glass (which is z-10)
+  img.style.zIndex = '0';
 
-  // Compute bounds relative to the hero section
-  let bounds = hero.getBoundingClientRect();
-  let imgRect = img.getBoundingClientRect();
+  // How far to stay away from edges (px)
+  const EDGE = 40; // tweak to 24/32/48 if you want tighter/looser padding
 
-  // Movement limits
-  let maxX = bounds.width  - imgRect.width;
-  let maxY = bounds.height - imgRect.height;
+  // Helpers to compute bounds with padding
+  function computeBounds() {
+    const cw = hero.clientWidth;
+    const ch = hero.clientHeight;
+    const iw = img.offsetWidth;
+    const ih = img.offsetHeight;
 
-  // Start roughly centered
-  let x = (bounds.width  - imgRect.width)  / 2;
-  let y = (bounds.height - imgRect.height) / 2;
+    // Min/max positions such that the whole image stays inside with padding
+    const minX = EDGE;
+    const minY = EDGE;
+    const maxX = Math.max(EDGE, cw - iw - EDGE);
+    const maxY = Math.max(EDGE, ch - ih - EDGE);
 
-  // Slow, gentle motion (px/s)
-  let vx = 160;  // horizontal speed
-  let vy = 120;  // vertical speed
+    return { minX, minY, maxX, maxY, iw, ih };
+  }
 
-  // Recalculate bounds on resize to keep it inside the hero
+  let { minX, minY, maxX, maxY } = computeBounds();
+
+  // Start somewhere safely inside the padded area
+  let x = (minX + maxX) / 2;
+  let y = (minY + maxY) / 2;
+
+  // Speeds (px/s)
+  let vx = 160;
+  let vy = 120;
+
+  // Recompute bounds on resize
   let resizeTimeout;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      bounds = hero.getBoundingClientRect();
-      imgRect = img.getBoundingClientRect();
-      maxX = Math.max(0, bounds.width  - imgRect.width);
-      maxY = Math.max(0, bounds.height - imgRect.height);
-      // clamp current position inside new bounds
-      x = Math.min(Math.max(0, x), maxX);
-      y = Math.min(Math.max(0, y), maxY);
+      ({ minX, minY, maxX, maxY } = computeBounds());
+      // Clamp current position inside new bounds
+      x = Math.min(Math.max(x, minX), maxX);
+      y = Math.min(Math.max(y, minY), maxY);
     }, 150);
   });
 
   let last = performance.now();
-
   function step(now) {
     const dt = (now - last) / 1000;
     last = now;
@@ -734,19 +743,19 @@ function bounceHeroWatermark() {
     x += vx * dt;
     y += vy * dt;
 
-    // Bounce off the container edges
-    if (x <= 0)      { x = 0;      vx = Math.abs(vx); }
-    if (x >= maxX)   { x = maxX;   vx = -Math.abs(vx); }
-    if (y <= 0)      { y = 0;      vy = Math.abs(vy); }
-    if (y >= maxY)   { y = maxY;   vy = -Math.abs(vy); }
+    // Bounce with clamping inside padded bounds
+    if (x <= minX) { x = minX; vx = Math.abs(vx); }
+    if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
+    if (y <= minY) { y = minY; vy = Math.abs(vy); }
+    if (y >= maxY) { y = maxY; vy = -Math.abs(vy); }
 
     img.style.transform = `translate(${x}px, ${y}px)`;
-
-    requestAnimationFrame(step); // keep going forever
+    requestAnimationFrame(step);
   }
 
   requestAnimationFrame(step);
 }
+
 
 // call your carousels and bouncing logo when ready
 startCarousels();
