@@ -453,13 +453,7 @@
             <div id="ai-modal-content" class="text-gray-700 max-h-[60vh] overflow-y-auto pr-2 space-y-4">
                 <p>Loading your project ideas...</p>
             </div>
-            <div class="mt-6 pt-4 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
-                <button id="tts-btn" class="bg-gray-700 hover:bg-gray-900 text-white font-semibold py-2 px-5 rounded-lg transition duration-300 flex items-center justify-center gap-2">
-                    <span id="tts-btn-text">Read Aloud ✨</span>
-                    <div id="tts-loading-spinner" class="loader w-5 h-5 border-2 border-white border-t-gray-400 hidden"></div>
-                </button>
-                <audio id="tts-audio" class="w-full sm:w-auto" controls></audio>
-            </div>
+            <div class="mt-6 pt-4 border-t border-gray-200"></div>
         </div>
     </div>
     
@@ -508,11 +502,8 @@
     const aiModalCloseBtn = document.getElementById('ai-modal-close-btn');
 
     // --- TTS Elements ---
-    const ttsBtn = document.getElementById('tts-btn');
-    const ttsBtnText = document.getElementById('tts-btn-text');
-    const ttsLoadingSpinner = document.getElementById('tts-loading-spinner');
-    const ttsAudio = document.getElementById('tts-audio');
-    let lastGeneratedText = ""; // Store AI text for TTS
+    
+    
 
     // ▼▼ PASTE YOUR GAS WEB APP URL HERE ▼▼
     const GAS_BASE = "https://script.google.com/macros/s/AKfycbzuikSL7IBAN7WaWcbPgxpLySDPRq2YEYneRTY9fWrjBdOCi5hbB6hySQMdSMNsZYsf/exec";
@@ -547,20 +538,17 @@
       }
     });
 
-    // --- TTS Button Listener ---
-    ttsBtn.addEventListener('click', handleTTSClick);
-
+    
     function showModal() {
       aiModal.classList.remove('invisible', 'opacity-0');
       aiModalContentBox.classList.remove('scale-95');
     }
 
     function closeModal() {
-      aiModal.classList.add('invisible', 'opacity-0');
-      aiModalContentBox.classList.add('scale-95');
-      ttsAudio.pause();
-      ttsAudio.src = "";
-    }
+  aiModal.classList.add('invisible', 'opacity-0');
+  aiModalContentBox.classList.add('scale-95');
+}
+
 
     function showFormMessage(message, isError = false) {
       formMessage.textContent = message;
@@ -588,18 +576,7 @@
       }
     }
     
-    function setTTSLoading(isLoading) {
-      if (isLoading) {
-        ttsBtnText.classList.add('hidden');
-        ttsLoadingSpinner.classList.remove('hidden');
-        ttsBtn.disabled = true;
-      } else {
-        ttsBtnText.classList.remove('hidden');
-        ttsLoadingSpinner.classList.add('hidden');
-        ttsBtn.disabled = false;
-      }
-    }
-
+    
     async function handleAIAssistClick() {
       const projectDetails = projectDetailsTextarea.value;
 
@@ -611,8 +588,7 @@
       showFormMessage('Generating AI ideas...', false);
       setAILoading(true);
       aiModalContent.innerHTML = '<p>Generating your project ideas, please wait...</p>';
-      ttsAudio.src = "";
-      lastGeneratedText = "";
+      
 
       const systemPrompt = `
         You are a friendly and helpful project assistant for "Blacksmith Construction".
@@ -630,7 +606,6 @@
       try {
         const aiResponse = await callGeminiAPI(systemPrompt, projectDetails);
         aiModalContent.innerHTML = aiResponse;
-        lastGeneratedText = aiModalContent.innerText;
         showModal();
         showFormMessage('AI ideas generated successfully!', false);
       } catch (error) {
@@ -644,37 +619,7 @@
       }
     }
 
-    async function handleTTSClick() {
-  // Try to (re)grab text if lastGeneratedText looks empty
-  if (!lastGeneratedText || !lastGeneratedText.trim()) {
-    lastGeneratedText = (aiModalContent.innerText || aiModalContent.textContent || "").trim();
-  }
-  if (!lastGeneratedText) {
-    aiModalContent.innerHTML += '<p class="text-red-600">No text to read aloud.</p>';
-    return;
-  }
-
-  setTTSLoading(true);
-  ttsAudio.src = "";
-
-  try {
-    const { audioData, mimeType } = await callGeminiTTSAPI(lastGeneratedText);
-    // Turn base64 into a Blob with the provided mimeType and play it
-    const bytes = base64ToArrayBuffer(audioData);
-    const blob = new Blob([bytes], { type: mimeType || 'audio/wav' });
-    const url = URL.createObjectURL(blob);
-
-    ttsAudio.src = url;
-    await ttsAudio.play();
-  } catch (error) {
-    console.error('Error calling Gemini TTS API:', error);
-    aiModalContent.innerHTML += '<p class="text-red-600">Sorry, couldn\'t generate audio at this time.</p>';
-  } finally {
-    setTTSLoading(false);
-  }
-}
-
-
+  
     // JSONP helper: injects a <script> with a unique callback to avoid CORS
 function jsonp(url, params = {}) {
   return new Promise((resolve, reject) => {
@@ -709,31 +654,9 @@ async function callGeminiAPI(systemPrompt, userQuery) {
   return res.html;
 }
 
-// Uses GAS JSONP endpoint (no CORS)
-async function callGeminiTTSAPI(textToSpeak) {
-  // keep JSONP URL short-ish
-  const text = textToSpeak.slice(0, 1200);
-  const res = await jsonp(`${GAS_BASE}?route=tts`, { text });
-  if (!res || res.ok === false) throw new Error(res?.error || 'TTS request failed');
-  return { audioData: res.audioData, mimeType: res.mimeType };
-}
-
-
-
     // === END of replacements ===
     
-    // Helpers
-    function base64ToArrayBuffer(base64) {
-      const binaryString = window.atob(base64);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      return bytes.buffer;
-    }
-
-   
+      
     // Keep existing gallery carousels running (unchanged)
 function startCarousels() {
   const carousels = document.querySelectorAll('[data-carousel]');
