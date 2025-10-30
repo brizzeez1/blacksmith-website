@@ -782,5 +782,59 @@
   });
 </script>
 
+    <!-- === HERO BACKGROUND ROTATOR === -->
+    <script>
+    (function setupHeroRotator() {
+      const heroImages = [
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(1).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(2).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(4).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(6).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(7).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(8).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(10).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(11).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(12).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(13).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(14).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(15).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(18).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(19).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(21).jpg"
+      ];
+
+      const container = document.getElementById("hero-bg");
+      if (!container || heroImages.length === 0) return;
+
+      // Create and insert all slide images
+      const slides = heroImages.map((url, idx) => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "Blacksmith Construction hero image";
+        img.className = [
+          "absolute","inset-0","w-full","h-full","object-cover",
+          "transition-opacity","duration-700","ease-in-out","pointer-events-none","select-none"
+        ].join(" ");
+        img.style.opacity = "0"; // hidden initially
+        img.setAttribute("loading", idx === 0 ? "eager" : "lazy");
+        container.appendChild(img);
+        return img;
+      });
+
+      let current = 0;
+      slides[0].style.opacity = "0.5"; // 50% opacity on first image
+
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReducedMotion || slides.length < 2) return;
+
+      setInterval(() => {
+        const prev = slides[current];
+        current = (current + 1) % slides.length;
+        const next = slides[current];
+        prev.style.opacity = "0";
+        next.style.opacity = "0.5"; // keep active at 50%
+      }, 5000);
+    })();
+    </script>
 </body>
 </html>
