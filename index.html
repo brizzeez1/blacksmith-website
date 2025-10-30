@@ -29,7 +29,16 @@
         ::-webkit-scrollbar-track {
             background-color: #edf2f7; /* gray-200 */
         }
-        
+        /* ~30% larger hero glass box, scales from center */
+        .hero-glass--bigger {
+          transform: scale(1.3);
+          transform-origin: center;
+          will-change: transform;
+        }
+        @media (max-width: 640px) {
+           /* keep mobile readable */
+           .hero-glass--bigger { transform: scale(1.12); }
+        }
         /* Styles for the AI Modal */
         .modal {
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -131,12 +140,12 @@
             <div class="absolute inset-0 pointer-events-none [background:radial-gradient(60%_60%_at_50%_40%,rgba(0,0,0,0.15),transparent)]"></div>
             <!-- Watermark Logo (kept) -->
             <div class="absolute inset-0 flex items-center justify-center">
-              <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png" alt="Blacksmith Construction Watermark" class="w-1/4 md:w-1/6 opacity-40">
+              <img id="hero-watermark" src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png" alt="Blacksmith Construction Watermark" class="w-1/4 md:w-1/6 opacity-40">
             </div>
           </div>
 
           <!-- Hero Content (unchanged) -->
-          <div class="relative z-10 max-w-3xl mx-auto bg-white/60 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl border border-white/60">
+          <div class="relative z-10 max-w-3xl mx-auto bg-white/60 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl border border-white/60 hero-glass--bigger">
             <span class="inline-flex items-center gap-2 text-sm md:text-base text-gray-700 bg-white/70 px-3 py-1 rounded-full border border-white/60 shadow-sm mb-4">
               Phoenix Metro • Custom Builds & Remodels
             </span>
@@ -752,35 +761,88 @@
     }
 
     // Keep existing gallery carousels running (unchanged)
-    function startCarousels() {
-      const carousels = document.querySelectorAll('[data-carousel]');
-      carousels.forEach(carousel => {
-        const slides = carousel.querySelectorAll('.carousel-slide');
-        let currentSlide = 0;
-        
-        function showSlide(index) {
-          slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
-          });
-        }
-
-        function nextSlide() {
-          currentSlide = (currentSlide + 1) % slides.length;
-          showSlide(currentSlide);
-        }
-        
-        if (slides.length > 1) {
-          setInterval(nextSlide, 5000);
-        }
+function startCarousels() {
+  const carousels = document.querySelectorAll('[data-carousel]');
+  carousels.forEach(carousel => {
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    let currentSlide = 0;
+    
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
       });
     }
-    
-    startCarousels();
 
-    // Initialize Lucide Icons
-    lucide.createIcons();
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+    
+    if (slides.length > 1) {
+      setInterval(nextSlide, 5000);
+    }
   });
+}
+
+// 🆕 Add this right here — bounce the watermark logo
+function bounceHeroWatermark() {
+  const hero = document.getElementById('home');
+  const img = document.getElementById('hero-watermark');
+  if (!hero || !img) return;
+
+  img.style.position = 'absolute';
+  img.style.willChange = 'transform';
+  img.classList.add('z-20'); // bring in front
+
+  const bounds = hero.getBoundingClientRect();
+  const imgRect = img.getBoundingClientRect();
+  const maxX = bounds.width  - imgRect.width;
+  const maxY = bounds.height - imgRect.height;
+
+  let x = (bounds.width  - imgRect.width)  / 2;
+  let y = (bounds.height - imgRect.height) / 2;
+  let vx = 120; // horizontal speed
+  let vy = 90;  // vertical speed
+
+  let last = performance.now();
+  const start = last;
+
+  function step(now) {
+    const dt = (now - last) / 1000;
+    last = now;
+
+    x += vx * dt;
+    y += vy * dt;
+
+    if (x <= 0)   { x = 0;   vx = Math.abs(vx); }
+    if (x >= maxX){ x = maxX; vx = -Math.abs(vx); }
+    if (y <= 0)   { y = 0;   vy = Math.abs(vy); }
+    if (y >= maxY){ y = maxY; vy = -Math.abs(vy); }
+
+    img.style.transform = `translate(${x}px, ${y}px)`;
+
+    if (now - start < 5000) {
+      requestAnimationFrame(step);
+    } else {
+      img.classList.remove('z-20');
+      img.style.transform = '';
+      img.style.position = '';
+      img.style.willChange = '';
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+// call your carousels and bouncing logo when ready
+startCarousels();
+setTimeout(bounceHeroWatermark, 600);
+
+// Initialize Lucide Icons
+lucide.createIcons();
+});
 </script>
+
 
     <!-- === HERO BACKGROUND ROTATOR === -->
     <script>
