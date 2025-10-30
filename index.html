@@ -455,448 +455,332 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // --- Mobile Menu Toggle ---
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIconOpen = document.getElementById('menu-icon-open');
-            const menuIconClose = document.getElementById('menu-icon-close');
+  document.addEventListener('DOMContentLoaded', (event) => {
+    // --- Mobile Menu Toggle ---
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIconOpen = document.getElementById('menu-icon-open');
+    const menuIconClose = document.getElementById('menu-icon-close');
 
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                menuIconOpen.classList.toggle('hidden');
-                menuIconClose.classList.toggle('hidden');
-            });
-            
-            // --- Close mobile menu when a link is clicked ---
-            const mobileLinks = mobileMenu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                    menuIconOpen.classList.remove('hidden');
-                    menuIconClose.classList.add('hidden');
-                });
-            });
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      menuIconOpen.classList.toggle('hidden');
+      menuIconClose.classList.toggle('hidden');
+    });
+    
+    // --- Close mobile menu when a link is clicked ---
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIconOpen.classList.remove('hidden');
+        menuIconClose.classList.add('hidden');
+      });
+    });
 
-            // --- Set Current Year in Footer ---
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+    // --- Set Current Year in Footer ---
+    document.getElementById('current-year').textContent = new Date().getFullYear();
 
-            // --- Contact Form Handling (Mock) ---
-            const contactForm = document.getElementById('contact-form');
-            const formMessage = document.getElementById('form-message');
-            const sendMessageBtn = document.getElementById('send-message-btn');
+    // --- Contact Form Handling (Mock) ---
+    const contactForm = document.getElementById('contact-form');
+    const formMessage = document.getElementById('form-message');
+    const sendMessageBtn = document.getElementById('send-message-btn');
 
-            // --- Gemini API Elements ---
-            const aiIdeasBtn = document.getElementById('ai-ideas-btn');
-            const aiBtnText = document.getElementById('ai-btn-text');
-            const aiLoadingSpinner = document.getElementById('ai-loading-spinner');
-            const projectDetailsTextarea = document.getElementById('message');
-            
-            // --- Modal Elements ---
-            const aiModal = document.getElementById('ai-modal');
-            const aiModalContentBox = document.getElementById('ai-modal-content-box');
-            const aiModalContent = document.getElementById('ai-modal-content');
-            const aiModalCloseBtn = document.getElementById('ai-modal-close-btn');
+    // --- Gemini API Elements ---
+    const aiIdeasBtn = document.getElementById('ai-ideas-btn');
+    const aiBtnText = document.getElementById('ai-btn-text');
+    const aiLoadingSpinner = document.getElementById('ai-loading-spinner');
+    const projectDetailsTextarea = document.getElementById('message');
+    
+    // --- Modal Elements ---
+    const aiModal = document.getElementById('ai-modal');
+    const aiModalContentBox = document.getElementById('ai-modal-content-box');
+    const aiModalContent = document.getElementById('ai-modal-content');
+    const aiModalCloseBtn = document.getElementById('ai-modal-close-btn');
 
-            // --- TTS Elements ---
-            const ttsBtn = document.getElementById('tts-btn');
-            const ttsBtnText = document.getElementById('tts-btn-text');
-            const ttsLoadingSpinner = document.getElementById('tts-loading-spinner');
-            const ttsAudio = document.getElementById('tts-audio');
-            let lastGeneratedText = ""; // Store AI text for TTS
+    // --- TTS Elements ---
+    const ttsBtn = document.getElementById('tts-btn');
+    const ttsBtnText = document.getElementById('tts-btn-text');
+    const ttsLoadingSpinner = document.getElementById('tts-loading-spinner');
+    const ttsAudio = document.getElementById('tts-audio');
+    let lastGeneratedText = ""; // Store AI text for TTS
 
-            // --- Contact Form Handling ---
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendMessageBtn.textContent = 'Sending...';
-                sendMessageBtn.disabled = true;
+    // ▼▼ PASTE YOUR GAS WEB APP URL HERE ▼▼
+    const GAS_BASE = "https://script.google.com/macros/s/AKfycbzuikSL7IBAN7WaWcbPgxpLySDPRq2YEYneRTY9fWrjBdOCi5hbB6hySQMdSMNsZYsf/exec";
+    // ▲▲ DO NOT USE AN API KEY IN THIS PAGE ▲▲
 
-                setTimeout(() => {
-                    contactForm.reset();
-                    sendMessageBtn.textContent = 'Send Message';
-                    sendMessageBtn.disabled = false;
-                    formMessage.textContent = 'Thank you! Your message has been sent.';
-                    formMessage.classList.remove('hidden', 'text-red-600');
-                    formMessage.classList.add('text-green-600');
-                    
-                    setTimeout(() => {
-                        formMessage.classList.add('hidden');
-                    }, 5000);
-                }, 1500);
-            });
-            
-            // --- AI Modal Listeners ---
-            aiIdeasBtn.addEventListener('click', handleAIAssistClick);
-            aiModalCloseBtn.addEventListener('click', closeModal);
-            aiModal.addEventListener('click', (e) => {
-                if (e.target === aiModal) {
-                    closeModal();
-                }
-            });
+    // --- Contact Form Handling ---
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      sendMessageBtn.textContent = 'Sending...';
+      sendMessageBtn.disabled = true;
 
-            // --- TTS Button Listener ---
-            ttsBtn.addEventListener('click', handleTTSClick);
+      setTimeout(() => {
+        contactForm.reset();
+        sendMessageBtn.textContent = 'Send Message';
+        sendMessageBtn.disabled = false;
+        formMessage.textContent = 'Thank you! Your message has been sent.';
+        formMessage.classList.remove('hidden', 'text-red-600');
+        formMessage.classList.add('text-green-600');
+        
+        setTimeout(() => {
+          formMessage.classList.add('hidden');
+        }, 5000);
+      }, 1500);
+    });
+    
+    // --- AI Modal Listeners ---
+    aiIdeasBtn.addEventListener('click', handleAIAssistClick);
+    aiModalCloseBtn.addEventListener('click', closeModal);
+    aiModal.addEventListener('click', (e) => {
+      if (e.target === aiModal) {
+        closeModal();
+      }
+    });
 
-            function showModal() {
-                aiModal.classList.remove('invisible', 'opacity-0');
-                aiModalContentBox.classList.remove('scale-95');
-            }
+    // --- TTS Button Listener ---
+    ttsBtn.addEventListener('click', handleTTSClick);
 
-            function closeModal() {
-                aiModal.classList.add('invisible', 'opacity-0');
-                aiModalContentBox.classList.add('scale-95');
-                ttsAudio.pause();
-                ttsAudio.src = "";
-            }
+    function showModal() {
+      aiModal.classList.remove('invisible', 'opacity-0');
+      aiModalContentBox.classList.remove('scale-95');
+    }
 
-            function showFormMessage(message, isError = false) {
-                formMessage.textContent = message;
-                formMessage.classList.remove('hidden');
-                if (isError) {
-                    formMessage.classList.add('text-red-600');
-                    formMessage.classList.remove('text-green-600');
-                } else {
-                    formMessage.classList.remove('text-red-600');
-                    formMessage.classList.add('text-green-600');
-                }
-            }
+    function closeModal() {
+      aiModal.classList.add('invisible', 'opacity-0');
+      aiModalContentBox.classList.add('scale-95');
+      ttsAudio.pause();
+      ttsAudio.src = "";
+    }
 
-            function setAILoading(isLoading) {
-                if (isLoading) {
-                    aiBtnText.classList.add('hidden');
-                    aiLoadingSpinner.classList.remove('hidden');
-                    aiIdeasBtn.disabled = true;
-                    sendMessageBtn.disabled = true;
-                } else {
-                    aiBtnText.classList.remove('hidden');
-                    aiLoadingSpinner.classList.add('hidden');
-                    aiIdeasBtn.disabled = false;
-                    sendMessageBtn.disabled = false;
-                }
-            }
-            
-            function setTTSLoading(isLoading) {
-                if (isLoading) {
-                    ttsBtnText.classList.add('hidden');
-                    ttsLoadingSpinner.classList.remove('hidden');
-                    ttsBtn.disabled = true;
-                } else {
-                    ttsBtnText.classList.remove('hidden');
-                    ttsLoadingSpinner.classList.add('hidden');
-                    ttsBtn.disabled = false;
-                }
-            }
+    function showFormMessage(message, isError = false) {
+      formMessage.textContent = message;
+      formMessage.classList.remove('hidden');
+      if (isError) {
+        formMessage.classList.add('text-red-600');
+        formMessage.classList.remove('text-green-600');
+      } else {
+        formMessage.classList.remove('text-red-600');
+        formMessage.classList.add('text-green-600');
+      }
+    }
 
-            async function handleAIAssistClick() {
-                const projectDetails = projectDetailsTextarea.value;
+    function setAILoading(isLoading) {
+      if (isLoading) {
+        aiBtnText.classList.add('hidden');
+        aiLoadingSpinner.classList.remove('hidden');
+        aiIdeasBtn.disabled = true;
+        sendMessageBtn.disabled = true;
+      } else {
+        aiBtnText.classList.remove('hidden');
+        aiLoadingSpinner.classList.add('hidden');
+        aiIdeasBtn.disabled = false;
+        sendMessageBtn.disabled = false;
+      }
+    }
+    
+    function setTTSLoading(isLoading) {
+      if (isLoading) {
+        ttsBtnText.classList.add('hidden');
+        ttsLoadingSpinner.classList.remove('hidden');
+        ttsBtn.disabled = true;
+      } else {
+        ttsBtnText.classList.remove('hidden');
+        ttsLoadingSpinner.classList.add('hidden');
+        ttsBtn.disabled = false;
+      }
+    }
 
-                if (projectDetails.trim().length < 10) {
-                    showFormMessage('Please provide more details about your project first (at least 10 characters).', true);
-                    return;
-                }
+    async function handleAIAssistClick() {
+      const projectDetails = projectDetailsTextarea.value;
 
-                showFormMessage('Generating AI ideas...', false);
-                setAILoading(true);
-                aiModalContent.innerHTML = '<p>Generating your project ideas, please wait...</p>';
-                ttsAudio.src = "";
-                lastGeneratedText = "";
+      if (projectDetails.trim().length < 10) {
+        showFormMessage('Please provide more details about your project first (at least 10 characters).', true);
+        return;
+      }
 
-                const systemPrompt = `
-                    You are a friendly and helpful project assistant for "Blacksmith Construction".
-                    A potential client has provided a description of a project they are considering.
-                    Your task is to provide a brief, encouraging, and helpful response.
-                    
-                    Respond in simple HTML format.
-                    - Start with a friendly greeting.
-                    - Briefly summarize their request to show you understand.
-                    - Provide a bulleted list (<ul>) of 3-5 interesting ideas, key considerations, or potential next steps related to their project.
-                    - Conclude with a friendly disclaimer that these are just ideas and a proper consultation is needed for a real quote and plan.
-                    - Do not use <h1> or <h2> tags. Use <strong> for emphasis if needed.
-                `;
+      showFormMessage('Generating AI ideas...', false);
+      setAILoading(true);
+      aiModalContent.innerHTML = '<p>Generating your project ideas, please wait...</p>';
+      ttsAudio.src = "";
+      lastGeneratedText = "";
 
-                try {
-                    const aiResponse = await callGeminiAPI(systemPrompt, projectDetails);
-                    aiModalContent.innerHTML = aiResponse;
-                    lastGeneratedText = aiModalContent.innerText;
-                    showModal();
-                    showFormMessage('AI ideas generated successfully!', false);
-                } catch (error) {
-                    console.error('Error calling Gemini API:', error);
-                    aiModalContent.innerHTML = '<p class="text-red-600">Sorry, we couldn\'t generate ideas at this time. Please try again later.</p>';
-                    showModal();
-                    showFormMessage('Error generating AI ideas.', true);
-                } finally {
-                    setAILoading(false);
-                    setTimeout(() => formMessage.classList.add('hidden'), 4000);
-                }
-            }
+      const systemPrompt = `
+        You are a friendly and helpful project assistant for "Blacksmith Construction".
+        A potential client has provided a description of a project they are considering.
+        Your task is to provide a brief, encouraging, and helpful response.
+        
+        Respond in simple HTML format.
+        - Start with a friendly greeting.
+        - Briefly summarize their request to show you understand.
+        - Provide a bulleted list (<ul>) of 3-5 interesting ideas, key considerations, or potential next steps.
+        - Conclude with a friendly disclaimer that these are just ideas and a proper consultation is needed.
+        - Do not use <h1> or <h2> tags. Use <strong> if needed.
+      `;
 
-            async function handleTTSClick() {
-                if (!lastGeneratedText) {
-                    aiModalContent.innerHTML += '<p class="text-red-600">No text to read aloud.</p>';
-                    return;
-                }
+      try {
+        const aiResponse = await callGeminiAPI(systemPrompt, projectDetails);
+        aiModalContent.innerHTML = aiResponse;
+        lastGeneratedText = aiModalContent.innerText;
+        showModal();
+        showFormMessage('AI ideas generated successfully!', false);
+      } catch (error) {
+        console.error('Error calling Gemini API:', error);
+        aiModalContent.innerHTML = '<p class="text-red-600">Sorry, we couldn\'t generate ideas at this time. Please try again later.</p>';
+        showModal();
+        showFormMessage('Error generating AI ideas.', true);
+      } finally {
+        setAILoading(false);
+        setTimeout(() => formMessage.classList.add('hidden'), 4000);
+      }
+    }
 
-                setTTSLoading(true);
-                ttsAudio.src = "";
+    async function handleTTSClick() {
+      if (!lastGeneratedText) {
+        aiModalContent.innerHTML += '<p class="text-red-600">No text to read aloud.</p>';
+        return;
+      }
 
-                try {
-                    const ttsResponse = await callGeminiTTSAPI(lastGeneratedText);
-                    const pcmData = base64ToArrayBuffer(ttsResponse.audioData);
-                    const sampleRate = parseInt(ttsResponse.mimeType.match(/rate=(\d+)/)[1], 10);
-                    
-                    const pcm16 = new Int16Array(pcmData);
-                    const wavBlob = pcmToWav(pcm16, sampleRate);
-                    const audioUrl = URL.createObjectURL(wavBlob);
-                    
-                    ttsAudio.src = audioUrl;
-                    ttsAudio.play();
+      setTTSLoading(true);
+      ttsAudio.src = "";
 
-                } catch (error) {
-                    console.error('Error calling Gemini TTS API:', error);
-                    aiModalContent.innerHTML += '<p class="text-red-600">Sorry, couldn\'t generate audio at this time.</p>';
-                } finally {
-                    setTTSLoading(false);
-                }
-            }
+      try {
+        const ttsResponse = await callGeminiTTSAPI(lastGeneratedText);
+        const pcmData = base64ToArrayBuffer(ttsResponse.audioData);
+        const sampleRate = parseInt(ttsResponse.mimeType.match(/rate=(\d+)/)[1], 10);
+        
+        const pcm16 = new Int16Array(pcmData);
+        const wavBlob = pcmToWav(pcm16, sampleRate);
+        const audioUrl = URL.createObjectURL(wavBlob);
+        
+        ttsAudio.src = audioUrl;
+        ttsAudio.play();
 
-            async function callGeminiAPI(systemPrompt, userQuery) {
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+      } catch (error) {
+        console.error('Error calling Gemini TTS API:', error);
+        aiModalContent.innerHTML += '<p class="text-red-600">Sorry, couldn\'t generate audio at this time.</p>';
+      } finally {
+        setTTSLoading(false);
+      }
+    }
 
-                const payload = {
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    },
-                };
-
-                let response;
-                let retries = 3;
-                let delay = 1000;
-
-                for (let i = 0; i < retries; i++) {
-                    try {
-                        response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (response.ok) {
-                            const result = await response.json();
-                            const candidate = result.candidates?.[0];
-                            if (candidate && candidate.content?.parts?.[0]?.text) {
-                                return candidate.content.parts[0].text;
-                            } else {
-                                throw new Error('Invalid response structure from Gemini API');
-                            }
-                        } else if (response.status === 429 || response.status >= 500) {
-                            if (i === retries - 1) throw new Error(`API request failed with status ${response.status}`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2;
-                        } else {
-                            throw new Error(`API request failed with status ${response.status}`);
-                        }
-                    } catch (error) {
-                        if (i === retries - 1) throw error;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2;
-                    }
-                }
-            }
-
-            async function callGeminiTTSAPI(textToSpeak) {
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
-
-                const prompt = `Say in a friendly, professional, and helpful tone: ${textToSpeak}`;
-
-                const payload = {
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: {
-                        responseModalities: ["AUDIO"],
-                        speechConfig: {
-                            voiceConfig: {
-                                prebuiltVoiceConfig: { voiceName: "Kore" }
-                            }
-                        }
-                    },
-                    model: "gemini-2.5-flash-preview-tts"
-                };
-
-                let response;
-                let retries = 3;
-                let delay = 1000;
-
-                for (let i = 0; i < retries; i++) {
-                     try {
-                        response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (response.ok) {
-                            const result = await response.json();
-                            const part = result?.candidates?.[0]?.content?.parts?.[0];
-                            const audioData = part?.inlineData?.data;
-                            const mimeType = part?.inlineData?.mimeType;
-
-                            if (audioData && mimeType && mimeType.startsWith("audio/")) {
-                                return { audioData, mimeType };
-                            } else {
-                                throw new Error('Invalid TTS response structure from Gemini API');
-                            }
-                        } else if (response.status === 429 || response.status >= 500) {
-                            if (i === retries - 1) throw new Error(`TTS API request failed with status ${response.status}`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2;
-                        } else {
-                            throw new Error(`TTS API request failed with status ${response.status}`);
-                        }
-                    } catch (error) {
-                        if (i === retries - 1) throw error;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2;
-                    }
-                }
-            }
-            
-            // Helpers
-            function base64ToArrayBuffer(base64) {
-                const binaryString = window.atob(base64);
-                const len = binaryString.length;
-                const bytes = new Uint8Array(len);
-                for (let i = 0; i < len; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-                return bytes.buffer;
-            }
-
-            function pcmToWav(pcmData, sampleRate) {
-                const numSamples = pcmData.length;
-                const numChannels = 1;
-                const bytesPerSample = 2;
-                const blockAlign = numChannels * bytesPerSample;
-                const byteRate = sampleRate * blockAlign;
-                const dataSize = numSamples * blockAlign;
-                const buffer = new ArrayBuffer(44 + dataSize);
-                const view = new DataView(buffer);
-
-                writeString(view, 0, 'RIFF');
-                view.setUint32(4, 36 + dataSize, true);
-                writeString(view, 8, 'WAVE');
-                
-                writeString(view, 12, 'fmt ');
-                view.setUint32(16, 16, true);
-                view.setUint16(20, 1, true);
-                view.setUint16(22, numChannels, true);
-                view.setUint32(24, sampleRate, true);
-                view.setUint32(28, byteRate, true);
-                view.setUint16(32, blockAlign, true);
-                view.setUint16(34, 16, true);
-                
-                writeString(view, 36, 'data');
-                view.setUint32(40, dataSize, true);
-
-                for (let i = 0; i < numSamples; i++) {
-                    view.setInt16(44 + i * 2, pcmData[i], true);
-                }
-
-                return new Blob([view], { type: 'audio/wav' });
-            }
-
-            function writeString(view, offset, string) {
-                for (let i = 0; i < string.length; i++) {
-                    view.setUint8(offset + i, string.charCodeAt(i));
-                }
-            }
-
-            // Keep existing gallery carousels running (unchanged)
-            function startCarousels() {
-                const carousels = document.querySelectorAll('[data-carousel]');
-                carousels.forEach(carousel => {
-                    const slides = carousel.querySelectorAll('.carousel-slide');
-                    let currentSlide = 0;
-                    
-                    function showSlide(index) {
-                        slides.forEach((slide, i) => {
-                            slide.classList.toggle('active', i === index);
-                        });
-                    }
-
-                    function nextSlide() {
-                        currentSlide = (currentSlide + 1) % slides.length;
-                        showSlide(currentSlide);
-                    }
-                    
-                    if (slides.length > 1) {
-                        setInterval(nextSlide, 5000);
-                    }
-                });
-            }
-            
-            startCarousels();
-
-            // Initialize Lucide Icons
-            lucide.createIcons();
-        });
-    </script>
-
-    <!-- === HERO BACKGROUND ROTATOR === -->
-    <script>
-    (function setupHeroRotator() {
-      const heroImages = [
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(1).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(2).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(4).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(6).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(7).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(8).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(10).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(11).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(12).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(13).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(14).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(15).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(18).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(19).jpg",
-        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(21).jpg"
-      ];
-
-      const container = document.getElementById("hero-bg");
-      if (!container || heroImages.length === 0) return;
-
-      // Create and insert all slide images
-      const slides = heroImages.map((url, idx) => {
-        const img = document.createElement("img");
-        img.src = url;
-        img.alt = "Blacksmith Construction hero image";
-        img.className = [
-          "absolute","inset-0","w-full","h-full","object-cover",
-          "transition-opacity","duration-700","ease-in-out","pointer-events-none","select-none"
-        ].join(" ");
-        img.style.opacity = "0"; // hidden initially
-        img.setAttribute("loading", idx === 0 ? "eager" : "lazy");
-        container.appendChild(img);
-        return img;
+    // === REPLACED: now calls your GAS web app instead of Google directly ===
+    async function callGeminiAPI(systemPrompt, userQuery) {
+      const res = await fetch(`${GAS_BASE}?route=ai-ideas`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ systemPrompt, userQuery })
       });
 
-      let current = 0;
-      slides[0].style.opacity = "0.5"; // 50% opacity on first image
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(`AI error ${res.status} ${text}`);
+      }
 
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReducedMotion || slides.length < 2) return;
+      const { html, error } = await res.json();
+      if (error) throw new Error(error);
+      return html;
+    }
 
-      setInterval(() => {
-        const prev = slides[current];
-        current = (current + 1) % slides.length;
-        const next = slides[current];
-        prev.style.opacity = "0";
-        next.style.opacity = "0.5"; // keep active at 50%
-      }, 5000);
-    })();
-    </script>
+    // === REPLACED: now calls your GAS web app for TTS ===
+    async function callGeminiTTSAPI(textToSpeak) {
+      const res = await fetch(`${GAS_BASE}?route=tts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: textToSpeak })
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(`TTS error ${res.status} ${text}`);
+      }
+
+      const data = await res.json(); // { audioData, mimeType }
+      if (data.error) throw new Error(data.error);
+      return data;
+    }
+    // === END of replacements ===
+    
+    // Helpers
+    function base64ToArrayBuffer(base64) {
+      const binaryString = window.atob(base64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+
+    function pcmToWav(pcmData, sampleRate) {
+      const numSamples = pcmData.length;
+      const numChannels = 1;
+      const bytesPerSample = 2;
+      const blockAlign = numChannels * bytesPerSample;
+      const byteRate = sampleRate * blockAlign;
+      const dataSize = numSamples * blockAlign;
+      const buffer = new ArrayBuffer(44 + dataSize);
+      const view = new DataView(buffer);
+
+      writeString(view, 0, 'RIFF');
+      view.setUint32(4, 36 + dataSize, true);
+      writeString(view, 8, 'WAVE');
+      
+      writeString(view, 12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, numChannels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, byteRate, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, 16, true);
+      
+      writeString(view, 36, 'data');
+      view.setUint32(40, dataSize, true);
+
+      for (let i = 0; i < numSamples; i++) {
+        view.setInt16(44 + i * 2, pcmData[i], true);
+      }
+
+      return new Blob([view], { type: 'audio/wav' });
+    }
+
+    function writeString(view, offset, string) {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    }
+
+    // Keep existing gallery carousels running (unchanged)
+    function startCarousels() {
+      const carousels = document.querySelectorAll('[data-carousel]');
+      carousels.forEach(carousel => {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+          slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+          });
+        }
+
+        function nextSlide() {
+          currentSlide = (currentSlide + 1) % slides.length;
+          showSlide(currentSlide);
+        }
+        
+        if (slides.length > 1) {
+          setInterval(nextSlide, 5000);
+        }
+      });
+    }
+    
+    startCarousels();
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  });
+</script>
+
 </body>
 </html>
