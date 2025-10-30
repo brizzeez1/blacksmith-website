@@ -15,81 +15,58 @@
     
     <style>
         /* Use Inter font family */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Simple scrollbar for a cleaner look */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #a0aec0; /* gray-500 */
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-track {
-            background-color: #edf2f7; /* gray-200 */
-        }
-        /* ~30% larger hero glass box, scales from center */
+        body { font-family: 'Inter', sans-serif; }
+
+        /* Simple scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background-color: #a0aec0; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background-color: #edf2f7; }
+
+        /* ~30% larger hero glass box */
         .hero-glass--bigger {
           transform: scale(1.3);
           transform-origin: center;
           will-change: transform;
         }
-        @media (max-width: 640px) {
-           /* keep mobile readable */
-           .hero-glass--bigger { transform: scale(1.12); }
-        }
-        /* Styles for the AI Modal */
-        .modal {
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-content {
-            transition: transform 0.3s ease;
-        }
+        @media (max-width: 640px) { .hero-glass--bigger { transform: scale(1.12); } }
+
+        /* Modal transitions */
+        .modal { transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-content { transition: transform 0.3s ease; }
         
         /* Simple loading spinner */
         .loader {
-            border: 4px solid #f3f3f3; /* Light grey */
-            border-top: 4px solid #ef4444; /* red-500 */
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ef4444;
             border-radius: 50%;
             width: 32px;
             height: 32px;
             animation: spin 1s linear infinite;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Carousel Styles (unchanged) */
-        .carousel-container {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            padding-top: 66.66%; /* 3:2 aspect ratio (400/600) */
-        }
-        .carousel-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-        .carousel-slide.active {
-            opacity: 1;
-        }
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        /* Carousel Styles */
+        .carousel-container { position: relative; overflow: hidden; width: 100%; padding-top: 66.66%; }
+        .carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease-in-out; }
+        .carousel-slide.active { opacity: 1; }
+        .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body class="bg-white text-gray-900">
 
+    <!-- ==================== WATERMARK LAYER (always behind, follows viewport) ==================== -->
+    <div id="wm-layer" class="fixed inset-0 z-10 pointer-events-none">
+      <img
+        id="wm-logo"
+        src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png"
+        alt=""
+        class="opacity-35 select-none will-change-transform"
+        style="position:absolute; left:0; top:0; width:22vw; max-width:260px; min-width:140px; height:auto;"
+      />
+    </div>
+
+    <!-- ==================== SITE CONTENT (now above watermark, but backgrounds stay below it) ==================== -->
+    <div id="content-root" class="relative">
     <!-- Header & Navigation -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -128,24 +105,20 @@
     </header>
 
     <main>
-        <!-- Hero Section (only the background mechanism changed) -->
+        <!-- Hero Section -->
         <section id="home" class="relative min-h-[70vh] md:min-h-screen flex items-center justify-center text-center px-6 py-24 overflow-hidden">
           <!-- Background: rotating images injected via JS -->
           <div class="absolute inset-0 z-0">
             <div id="hero-bg" class="absolute inset-0"></div>
 
-            <!-- Soft gradient overlay (kept) -->
+            <!-- Soft gradient overlay -->
             <div class="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/70 md:from-white/50 md:via-white/30 md:to-white/60"></div>
-            <!-- Subtle vignette (kept) -->
+            <!-- Subtle vignette -->
             <div class="absolute inset-0 pointer-events-none [background:radial-gradient(60%_60%_at_50%_40%,rgba(0,0,0,0.15),transparent)]"></div>
-            <!-- Watermark Logo (kept) -->
-            <div class="absolute inset-0">
-              <img id="hero-watermark" src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png" alt="Blacksmith Construction Watermark" class="w-1/4 md:w-1/6 opacity-40">
-            </div>
           </div>
 
-          <!-- Hero Content (unchanged) -->
-          <div class="relative z-10 max-w-3xl mx-auto bg-white/60 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl border border-white/60 hero-glass--bigger">
+          <!-- Hero Content (raised above watermark) -->
+          <div class="relative z-30 max-w-3xl mx-auto bg-white/60 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl border border-white/60 hero-glass--bigger">
             <span class="inline-flex items-center gap-2 text-sm md:text-base text-gray-700 bg-white/70 px-3 py-1 rounded-full border border-white/60 shadow-sm mb-4">
               Phoenix Metro • Custom Builds & Remodels
             </span>
@@ -171,21 +144,21 @@
             </p>
           </div>
 
-          <!-- Scroll cue (unchanged) -->
-          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-gray-700/70 animate-bounce">
+          <!-- Scroll cue -->
+          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 text-gray-700/70 animate-bounce">
             <i data-lucide="chevron-down" class="w-6 h-6"></i>
           </div>
         </section>
 
-        <!-- Services Section -->
+        <!-- Services Section (content raised) -->
         <section id="services" class="py-20 md:py-28 bg-gray-100">
-            <div class="container mx-auto px-6">
+            <div class="container mx-auto px-6 relative z-20">
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">Our Services</h2>
                 <div class="h-1 bg-red-600 w-24 mx-auto mb-12"></div>
                 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Service Card 1 -->
-                    <div class="bg-white rounded-lg shadow-xl p-8 transform transition duration-500 hover:scale-105 hover:shadow-red-500/10">
+                    <div class="bg-white rounded-lg shadow-xl p-8 transform transition duration-500 hover:scale-105 hover:shadow-red-500/10 relative z-20">
                         <div class="flex-shrink-0 mb-4">
                             <i data-lucide="home" class="w-12 h-12 text-red-500"></i>
                         </div>
@@ -196,7 +169,7 @@
                     </div>
                     
                     <!-- Service Card 2 -->
-                    <div class="bg-white rounded-lg shadow-xl p-8 transform transition duration-500 hover:scale-105 hover:shadow-red-500/10">
+                    <div class="bg-white rounded-lg shadow-xl p-8 transform transition duration-500 hover:scale-105 hover:shadow-red-500/10 relative z-20">
                         <div class="flex-shrink-0 mb-4">
                             <i data-lucide="hammer" class="w-12 h-12 text-red-500"></i>
                         </div>
@@ -207,7 +180,7 @@
                     </div>
                     
                     <!-- Service Card 3 -->
-                    <div class="bg-white rounded-lg shadow-xl p-8 transform transition duration-500 hover:scale-105 hover:shadow-red-500/10">
+                    <div class="bg-white rounded-lg shadow-xl p-8 transform transition duration-500 hover:scale-105 hover:shadow-red-500/10 relative z-20">
                         <div class="flex-shrink-0 mb-4">
                             <i data-lucide="building" class="w-12 h-12 text-red-500"></i>
                         </div>
@@ -220,15 +193,15 @@
             </div>
         </section>
 
-        <!-- About Us Section -->
+        <!-- About Us Section (content raised) -->
         <section id="about" class="py-20 md:py-28 bg-white">
-            <div class="container mx-auto px-6">
+            <div class="container mx-auto px-6 relative z-20">
                 <div class="flex flex-col lg:flex-row items-center gap-12">
-                    <div class="lg:w-1/2">
+                    <div class="lg:w-1/2 relative z-20">
                         <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/OurTeamatWork_1.jpg"
                              alt="Our Team at Work" class="rounded-lg shadow-2xl w-full h-auto object-cover">
                     </div>
-                    <div class="lg:w-1/2">
+                    <div class="lg:w-1/2 relative z-20">
                         <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">About Blacksmith <span class="text-red-500">Construction</span></h2>
                         <div class="h-1 bg-red-600 w-24 mb-6"></div>
                         <p class="text-gray-600 text-lg mb-4">
@@ -245,16 +218,16 @@
             </div>
         </section>
 
-        <!-- Gallery Section -->
+        <!-- Gallery Section (content raised) -->
         <section id="gallery" class="py-20 md:py-28 bg-gray-100">
-            <div class="container mx-auto px-6">
+            <div class="container mx-auto px-6 relative z-20">
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">Our Work</h2>
                 <div class="h-1 bg-red-600 w-24 mx-auto mb-12"></div>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     
                     <!-- Carousel 1: Kitchen Remodel -->
-                    <div class="rounded-lg overflow-hidden shadow-lg">
+                    <div class="rounded-lg overflow-hidden shadow-lg relative z-20">
                      <div class="carousel-container" data-carousel="kitchen">
                       <div class="carousel-slide active">
                        <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/kitchen/kitchen_7.png" alt="Kitchen Remodel 7" class="w-full h-full object-cover">
@@ -280,10 +253,8 @@
                      </div>
                     </div>
 
-
-                    
                     <!-- Carousel 2: Bathroom Remodel -->
-                    <div class="rounded-lg overflow-hidden shadow-lg">
+                    <div class="rounded-lg overflow-hidden shadow-lg relative z-20">
                      <div class="carousel-container" data-carousel="bathroom">
                       <div class="carousel-slide active">
                        <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/Bathroom/bathroom_1.jpg" alt="Bathroom Remodel 1" class="w-full h-full object-cover">
@@ -306,9 +277,8 @@
                      </div>
                     </div>
 
-                    
                     <!-- Carousel 3: General Contracting -->
-                    <div class="rounded-lg overflow-hidden shadow-lg">
+                    <div class="rounded-lg overflow-hidden shadow-lg relative z-20">
                      <div class="carousel-container" data-carousel="generalcontracting">
                       <div class="carousel-slide active">
                        <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/generalcontracting/generalcontracting_1.jpg" alt="General Contracting 1" class="w-full h-full object-cover">
@@ -337,13 +307,13 @@
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <!-- Contact Section (content raised) -->
         <section id="contact" class="py-20 md:py-28 bg-white">
-            <div class="container mx-auto px-6">
+            <div class="container mx-auto px-6 relative z-20">
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">Get in Touch</h2>
                 <div class="h-1 bg-red-600 w-24 mx-auto mb-12"></div>
 
-                <div class="max-w-3xl mx-auto bg-gray-100 p-8 md:p-12 rounded-lg shadow-2xl">
+                <div class="max-w-3xl mx-auto bg-gray-100 p-8 md:p-12 rounded-lg shadow-2xl relative z-20">
                     <p class="text-center text-gray-600 text-lg mb-8">
                         Ready to start your next project? Send us a message and we'll get back to you to schedule a free consultation.
                     </p>
@@ -397,7 +367,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-100 border-t border-gray-200 pt-12 pb-8">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-6 relative z-20">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <!-- Footer Logo & Info -->
                 <div class="mb-6 md:mb-0">
@@ -441,7 +411,7 @@
         </div>
     </footer>
     
-    <!-- AI Response Modal (unchanged) -->
+    <!-- AI Response Modal -->
     <div id="ai-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 invisible opacity-0">
         <div id="ai-modal-content-box" class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-6 md:p-8 transform scale-95">
             <div class="flex justify-between items-center mb-4">
@@ -456,7 +426,8 @@
             <div class="mt-6 pt-4 border-t border-gray-200"></div>
         </div>
     </div>
-    
+    </div><!-- /#content-root -->
+
     <script>
   document.addEventListener('DOMContentLoaded', (event) => {
     // --- Mobile Menu Toggle ---
@@ -501,10 +472,6 @@
     const aiModalContent = document.getElementById('ai-modal-content');
     const aiModalCloseBtn = document.getElementById('ai-modal-close-btn');
 
-    // --- TTS Elements ---
-    
-    
-
     // ▼▼ PASTE YOUR GAS WEB APP URL HERE ▼▼
     const GAS_BASE = "https://script.google.com/macros/s/AKfycbzuikSL7IBAN7WaWcbPgxpLySDPRq2YEYneRTY9fWrjBdOCi5hbB6hySQMdSMNsZYsf/exec";
     // ▲▲ DO NOT USE AN API KEY IN THIS PAGE ▲▲
@@ -538,17 +505,15 @@
       }
     });
 
-    
     function showModal() {
       aiModal.classList.remove('invisible', 'opacity-0');
       aiModalContentBox.classList.remove('scale-95');
     }
 
     function closeModal() {
-  aiModal.classList.add('invisible', 'opacity-0');
-  aiModalContentBox.classList.add('scale-95');
-}
-
+      aiModal.classList.add('invisible', 'opacity-0');
+      aiModalContentBox.classList.add('scale-95');
+    }
 
     function showFormMessage(message, isError = false) {
       formMessage.textContent = message;
@@ -576,7 +541,6 @@
       }
     }
     
-    
     async function handleAIAssistClick() {
       const projectDetails = projectDetailsTextarea.value;
 
@@ -589,7 +553,6 @@
       setAILoading(true);
       aiModalContent.innerHTML = '<p>Generating your project ideas, please wait...</p>';
       
-
       const systemPrompt = `
         You are a friendly and helpful project assistant for "Blacksmith Construction".
         A potential client has provided a description of a project they are considering.
@@ -619,152 +582,134 @@
       }
     }
 
-  
-    // JSONP helper: injects a <script> with a unique callback to avoid CORS
-function jsonp(url, params = {}) {
-  return new Promise((resolve, reject) => {
-    const cbName = `jsonp_cb_${Date.now()}_${Math.floor(Math.random()*1e6)}`;
-    params.callback = cbName;
+    // JSONP helper
+    function jsonp(url, params = {}) {
+      return new Promise((resolve, reject) => {
+        const cbName = `jsonp_cb_${Date.now()}_${Math.floor(Math.random()*1e6)}`;
+        params.callback = cbName;
 
-    const qs = Object.entries(params)
-      .map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-      .join('&');
+        const qs = Object.entries(params)
+          .map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+          .join('&');
 
-    const script = document.createElement('script');
-    script.src = `${url}${url.includes('?') ? '&' : '?'}${qs}`;
-    script.async = true;
+        const script = document.createElement('script');
+        script.src = `${url}${url.includes('?') ? '&' : '?'}${qs}`;
+        script.async = true;
 
-    window[cbName] = (data) => { resolve(data); cleanup(); };
-    script.onerror = () => { reject(new Error('JSONP request failed')); cleanup(); };
+        window[cbName] = (data) => { resolve(data); cleanup(); };
+        script.onerror = () => { reject(new Error('JSONP request failed')); cleanup(); };
 
-    function cleanup() {
-      delete window[cbName];
-      if (script && script.parentNode) script.parentNode.removeChild(script);
-    }
+        function cleanup() {
+          delete window[cbName];
+          if (script && script.parentNode) script.parentNode.removeChild(script);
+        }
 
-    document.head.appendChild(script);
-  });
-}
-
-// Uses GAS JSONP endpoint (no CORS)
-async function callGeminiAPI(systemPrompt, userQuery) {
-  // systemPrompt is now ignored; prompt is baked server-side
-  const res = await jsonp(`${GAS_BASE}?route=ai-ideas`, { userQuery });
-  if (!res || res.ok === false) throw new Error(res?.error || 'AI request failed');
-  return res.html;
-}
-
-    // === END of replacements ===
-    
-      
-    // Keep existing gallery carousels running (unchanged)
-function startCarousels() {
-  const carousels = document.querySelectorAll('[data-carousel]');
-  carousels.forEach(carousel => {
-    const slides = carousel.querySelectorAll('.carousel-slide');
-    let currentSlide = 0;
-    
-    function showSlide(index) {
-      slides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === index);
+        document.head.appendChild(script);
       });
     }
 
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
+    // Uses GAS JSONP endpoint
+    async function callGeminiAPI(systemPrompt, userQuery) {
+      const res = await jsonp(`${GAS_BASE}?route=ai-ideas`, { userQuery });
+      if (!res || res.ok === false) throw new Error(res?.error || 'AI request failed');
+      return res.html;
     }
-    
-    if (slides.length > 1) {
-      setInterval(nextSlide, 5000);
+
+    // Carousels
+    function startCarousels() {
+      const carousels = document.querySelectorAll('[data-carousel]');
+      carousels.forEach(carousel => {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        let currentSlide = 0;
+        function showSlide(index) {
+          slides.forEach((slide, i) => { slide.classList.toggle('active', i === index); });
+        }
+        function nextSlide() {
+          currentSlide = (currentSlide + 1) % slides.length;
+          showSlide(currentSlide);
+        }
+        if (slides.length > 1) setInterval(nextSlide, 5000);
+      });
     }
+    startCarousels();
+
+    // Icons
+    lucide.createIcons();
+
+    // ==================== VIEWPORT BOUNCER (for wm-logo) ====================
+    function startViewportBouncer() {
+      const img = document.getElementById('wm-logo');
+      if (!img) return;
+
+      const EDGE = 40;
+
+      img.style.position = 'absolute';
+      img.style.left = '0px';
+      img.style.top  = '0px';
+      img.style.pointerEvents = 'none';
+      img.style.userSelect = 'none';
+      img.style.zIndex = '0';
+
+      function computeBounds() {
+        const cw = window.innerWidth;
+        const ch = window.innerHeight;
+        const iw = img.offsetWidth || 200;
+        const ih = img.offsetHeight || 200;
+
+        const minX = EDGE;
+        const minY = EDGE;
+        const maxX = Math.max(EDGE, cw - iw - EDGE);
+        const maxY = Math.max(EDGE, ch - ih - EDGE);
+
+        return { minX, minY, maxX, maxY, iw, ih };
+      }
+
+      let { minX, minY, maxX, maxY } = computeBounds();
+
+      let x = (minX + maxX) / 2;
+      let y = (minY + maxY) / 2;
+
+      let vx = 100;
+      let vy = 75;
+
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          ({ minX, minY, maxX, maxY } = computeBounds());
+          x = Math.min(Math.max(x, minX), maxX);
+          y = Math.min(Math.max(y, minY), maxY);
+        }, 120);
+      });
+
+      img.addEventListener('load', () => {
+        ({ minX, minY, maxX, maxY } = computeBounds());
+        x = Math.min(Math.max(x, minX), maxX);
+        y = Math.min(Math.max(y, minY), maxY);
+      }, { once: true });
+
+      let last = performance.now();
+      function step(now) {
+        const dt = (now - last) / 1000;
+        last = now;
+
+        x += vx * dt;
+        y += vy * dt;
+
+        if (x <= minX) { x = minX; vx = Math.abs(vx); }
+        if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
+        if (y <= minY) { y = minY; vy = Math.abs(vy); }
+        if (y >= maxY) { y = maxY; vy = -Math.abs(vy); }
+
+        img.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    startViewportBouncer();
   });
-}
-
-// 🆕 Perpetual background bounce for the hero watermark (not clickable)
-function bounceHeroWatermark() {
-  const hero = document.getElementById('home');
-  const img = document.getElementById('hero-watermark');
-  if (!hero || !img) return;
-
-  // Make it non-interactive and behind the glass
-  img.style.position = 'absolute';
-  img.style.pointerEvents = 'none';
-  img.style.userSelect = 'none';
-  img.style.willChange = 'transform';
-  img.style.zIndex = '0';
-
-  // How far to stay away from edges (px)
-  const EDGE = 40; // tweak to 24/32/48 if you want tighter/looser padding
-
-  // Helpers to compute bounds with padding
-  function computeBounds() {
-    const cw = hero.clientWidth;
-    const ch = hero.clientHeight;
-    const iw = img.offsetWidth;
-    const ih = img.offsetHeight;
-
-    // Min/max positions such that the whole image stays inside with padding
-    const minX = EDGE;
-    const minY = EDGE;
-    const maxX = Math.max(EDGE, cw - iw - EDGE);
-    const maxY = Math.max(EDGE, ch - ih - EDGE);
-
-    return { minX, minY, maxX, maxY, iw, ih };
-  }
-
-  let { minX, minY, maxX, maxY } = computeBounds();
-
-  // Start somewhere safely inside the padded area
-  let x = (minX + maxX) / 2;
-  let y = (minY + maxY) / 2;
-
-  // Speeds (px/s)
-  let vx = 160;
-  let vy = 120;
-
-  // Recompute bounds on resize
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      ({ minX, minY, maxX, maxY } = computeBounds());
-      // Clamp current position inside new bounds
-      x = Math.min(Math.max(x, minX), maxX);
-      y = Math.min(Math.max(y, minY), maxY);
-    }, 150);
-  });
-
-  let last = performance.now();
-  function step(now) {
-    const dt = (now - last) / 1000;
-    last = now;
-
-    x += vx * dt;
-    y += vy * dt;
-
-    // Bounce with clamping inside padded bounds
-    if (x <= minX) { x = minX; vx = Math.abs(vx); }
-    if (x >= maxX) { x = maxX; vx = -Math.abs(vx); }
-    if (y <= minY) { y = minY; vy = Math.abs(vy); }
-    if (y >= maxY) { y = maxY; vy = -Math.abs(vy); }
-
-    img.style.transform = `translate(${x}px, ${y}px)`;
-    requestAnimationFrame(step);
-  }
-
-  requestAnimationFrame(step);
-}
-
-
-// call your carousels and bouncing logo when ready
-startCarousels();
-setTimeout(bounceHeroWatermark, 600); // small delay so layout is settled
-
-// Initialize Lucide Icons
-lucide.createIcons();
-
-});
 </script>
 
 
@@ -792,7 +737,6 @@ lucide.createIcons();
       const container = document.getElementById("hero-bg");
       if (!container || heroImages.length === 0) return;
 
-      // Create and insert all slide images
       const slides = heroImages.map((url, idx) => {
         const img = document.createElement("img");
         img.src = url;
@@ -801,14 +745,14 @@ lucide.createIcons();
           "absolute","inset-0","w-full","h-full","object-cover",
           "transition-opacity","duration-700","ease-in-out","pointer-events-none","select-none"
         ].join(" ");
-        img.style.opacity = "0"; // hidden initially
+        img.style.opacity = "0";
         img.setAttribute("loading", idx === 0 ? "eager" : "lazy");
         container.appendChild(img);
         return img;
       });
 
       let current = 0;
-      slides[0].style.opacity = "0.65"; // 65% opacity on first image
+      slides[0].style.opacity = "0.65";
 
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (prefersReducedMotion || slides.length < 2) return;
@@ -818,7 +762,7 @@ lucide.createIcons();
         current = (current + 1) % slides.length;
         const next = slides[current];
         prev.style.opacity = "0";
-        next.style.opacity = "0.5"; // keep active at 50%
+        next.style.opacity = "0.5";
       }, 5000);
     })();
     </script>
