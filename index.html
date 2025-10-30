@@ -53,7 +53,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Carousel Styles */
+        /* Carousel Styles (unchanged) */
         .carousel-container {
             position: relative;
             overflow: hidden;
@@ -119,59 +119,53 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
+        <!-- Hero Section (only the background mechanism changed) -->
         <section id="home" class="relative min-h-[70vh] md:min-h-screen flex items-center justify-center text-center px-6 py-24 overflow-hidden">
-  <!-- Background Image -->
-  <div class="absolute inset-0 z-0">
-    <img src="https://placehold.co/1920x1080/2D3748/1A202C" 
-         onerror="this.src='https://placehold.co/1920x1080/2D3748/1A202C?text=Building+Future'"
-         alt="Construction background" class="w-full h-full object-cover">
-    <!-- Soft gradient overlay -->
-    <div class="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/70 md:from-white/50 md:via-white/30 md:to-white/60"></div>
-    <!-- Subtle vignette -->
-    <div class="absolute inset-0 pointer-events-none [background:radial-gradient(60%_60%_at_50%_40%,rgba(0,0,0,0.15),transparent)]"></div>
-    <!-- Watermark Logo -->
-    <div class="absolute inset-0 flex items-center justify-center">
-      <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png" alt="Blacksmith Construction Watermark" class="w-1/4 md:w-1/6 opacity-40">
-    </div>
-  </div>
+          <!-- Background: rotating images injected via JS -->
+          <div class="absolute inset-0 z-0">
+            <div id="hero-bg" class="absolute inset-0"></div>
 
-  <!-- Hero Content (glass card) -->
-  <div class="relative z-10 max-w-3xl mx-auto bg-white/60 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl border border-white/60">
-    <!-- Eyebrow -->
-    <span class="inline-flex items-center gap-2 text-sm md:text-base text-gray-700 bg-white/70 px-3 py-1 rounded-full border border-white/60 shadow-sm mb-4">
-      Phoenix Metro • Custom Builds & Remodels
-    </span>
+            <!-- Soft gradient overlay (kept) -->
+            <div class="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-white/70 md:from-white/50 md:via-white/30 md:to-white/60"></div>
+            <!-- Subtle vignette (kept) -->
+            <div class="absolute inset-0 pointer-events-none [background:radial-gradient(60%_60%_at_50%_40%,rgba(0,0,0,0.15),transparent)]"></div>
+            <!-- Watermark Logo (kept) -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <img src="https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/logo/Blacksmith%20Construction%202025.png" alt="Blacksmith Construction Watermark" class="w-1/4 md:w-1/6 opacity-40">
+            </div>
+          </div>
 
-    <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 drop-shadow-sm">
-      Building Your Vision
-    </h1>
-    <p class="text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto">
-      From concept to completion, Blacksmith Construction delivers quality, craftsmanship, and reliability you can trust.
-    </p>
+          <!-- Hero Content (unchanged) -->
+          <div class="relative z-10 max-w-3xl mx-auto bg-white/60 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl border border-white/60">
+            <span class="inline-flex items-center gap-2 text-sm md:text-base text-gray-700 bg-white/70 px-3 py-1 rounded-full border border-white/60 shadow-sm mb-4">
+              Phoenix Metro • Custom Builds & Remodels
+            </span>
 
-    <!-- CTAs -->
-    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a href="#contact" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300 shadow-lg transform hover:scale-105" aria-label="Start your project today">
-        Start Your Project Today
-      </a>
-      <a href="#gallery" class="bg-white/70 hover:bg-white text-gray-900 font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 border border-gray-200 shadow-sm" aria-label="See our work">
-        See Our Work
-      </a>
-    </div>
+            <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 drop-shadow-sm">
+              Building Your Vision
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-900 max-w-3xl mx-auto">
+              From concept to completion, Blacksmith Construction delivers quality, craftsmanship, and reliability you can trust.
+            </p>
 
-    <!-- Trust line -->
-    <p class="mt-4 text-sm md:text-base text-gray-600">
-      Licensed • Bonded • Insured • ROC 352453
-    </p>
-  </div>
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href="#contact" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300 shadow-lg transform hover:scale-105" aria-label="Start your project today">
+                Start Your Project Today
+              </a>
+              <a href="#gallery" class="bg-white/70 hover:bg-white text-gray-900 font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 border border-gray-200 shadow-sm" aria-label="See our work">
+                See Our Work
+              </a>
+            </div>
 
-  <!-- Scroll cue -->
-  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-gray-700/70 animate-bounce">
-    <i data-lucide="chevron-down" class="w-6 h-6"></i>
-  </div>
-</section>
+            <p class="mt-4 text-sm md:text-base text-gray-600">
+              Licensed • Bonded • Insured • ROC 352453
+            </p>
+          </div>
 
+          <!-- Scroll cue (unchanged) -->
+          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 text-gray-700/70 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6"></i>
+          </div>
         </section>
 
         <!-- Services Section -->
@@ -438,7 +432,7 @@
         </div>
     </footer>
     
-    <!-- AI Response Modal -->
+    <!-- AI Response Modal (unchanged) -->
     <div id="ai-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 invisible opacity-0">
         <div id="ai-modal-content-box" class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-6 md:p-8 transform scale-95">
             <div class="flex justify-between items-center mb-4">
@@ -448,7 +442,6 @@
                 </button>
             </div>
             <div id="ai-modal-content" class="text-gray-700 max-h-[60vh] overflow-y-auto pr-2 space-y-4">
-                <!-- AI content will be injected here -->
                 <p>Loading your project ideas...</p>
             </div>
             <div class="mt-6 pt-4 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
@@ -515,12 +508,9 @@
             // --- Contact Form Handling ---
             contactForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                // This is a mock submission.
-                // In a real app, you'd send this data (including files) to a server.
                 sendMessageBtn.textContent = 'Sending...';
                 sendMessageBtn.disabled = true;
 
-                // Simulate a network request
                 setTimeout(() => {
                     contactForm.reset();
                     sendMessageBtn.textContent = 'Send Message';
@@ -529,7 +519,6 @@
                     formMessage.classList.remove('hidden', 'text-red-600');
                     formMessage.classList.add('text-green-600');
                     
-                    // Hide the message after 5 seconds
                     setTimeout(() => {
                         formMessage.classList.add('hidden');
                     }, 5000);
@@ -540,7 +529,6 @@
             aiIdeasBtn.addEventListener('click', handleAIAssistClick);
             aiModalCloseBtn.addEventListener('click', closeModal);
             aiModal.addEventListener('click', (e) => {
-                // Close modal if clicking on the background overlay
                 if (e.target === aiModal) {
                     closeModal();
                 }
@@ -557,12 +545,10 @@
             function closeModal() {
                 aiModal.classList.add('invisible', 'opacity-0');
                 aiModalContentBox.classList.add('scale-95');
-                // Stop any playing audio when modal closes
                 ttsAudio.pause();
                 ttsAudio.src = "";
             }
 
-            // --- Show/Hide Form Message Utility ---
             function showFormMessage(message, isError = false) {
                 formMessage.textContent = message;
                 formMessage.classList.remove('hidden');
@@ -575,7 +561,6 @@
                 }
             }
 
-            // --- Toggle AI Button Loading State ---
             function setAILoading(isLoading) {
                 if (isLoading) {
                     aiBtnText.classList.add('hidden');
@@ -590,7 +575,6 @@
                 }
             }
             
-            // --- Toggle TTS Button Loading State ---
             function setTTSLoading(isLoading) {
                 if (isLoading) {
                     ttsBtnText.classList.add('hidden');
@@ -603,7 +587,6 @@
                 }
             }
 
-            // --- 1. Handle "Get AI Ideas" Click ---
             async function handleAIAssistClick() {
                 const projectDetails = projectDetailsTextarea.value;
 
@@ -615,10 +598,9 @@
                 showFormMessage('Generating AI ideas...', false);
                 setAILoading(true);
                 aiModalContent.innerHTML = '<p>Generating your project ideas, please wait...</p>';
-                ttsAudio.src = ""; // Clear previous audio
-                lastGeneratedText = ""; // Clear previous text
+                ttsAudio.src = "";
+                lastGeneratedText = "";
 
-                // System prompt for the AI
                 const systemPrompt = `
                     You are a friendly and helpful project assistant for "Blacksmith Construction".
                     A potential client has provided a description of a project they are considering.
@@ -635,7 +617,7 @@
                 try {
                     const aiResponse = await callGeminiAPI(systemPrompt, projectDetails);
                     aiModalContent.innerHTML = aiResponse;
-                    lastGeneratedText = aiModalContent.innerText; // Get the plain text for TTS
+                    lastGeneratedText = aiModalContent.innerText;
                     showModal();
                     showFormMessage('AI ideas generated successfully!', false);
                 } catch (error) {
@@ -645,12 +627,10 @@
                     showFormMessage('Error generating AI ideas.', true);
                 } finally {
                     setAILoading(false);
-                    // Hide the form message after a few seconds
                     setTimeout(() => formMessage.classList.add('hidden'), 4000);
                 }
             }
 
-            // --- 2. Handle "Read Aloud" Click ---
             async function handleTTSClick() {
                 if (!lastGeneratedText) {
                     aiModalContent.innerHTML += '<p class="text-red-600">No text to read aloud.</p>';
@@ -658,7 +638,7 @@
                 }
 
                 setTTSLoading(true);
-                ttsAudio.src = ""; // Clear previous audio
+                ttsAudio.src = "";
 
                 try {
                     const ttsResponse = await callGeminiTTSAPI(lastGeneratedText);
@@ -674,16 +654,14 @@
 
                 } catch (error) {
                     console.error('Error calling Gemini TTS API:', error);
-                    // Display error in modal (or just log it)
                     aiModalContent.innerHTML += '<p class="text-red-600">Sorry, couldn\'t generate audio at this time.</p>';
                 } finally {
                     setTTSLoading(false);
                 }
             }
 
-            // --- 3. Gemini API Call (Text) ---
             async function callGeminiAPI(systemPrompt, userQuery) {
-                const apiKey = ""; // API key will be injected by the environment
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
                 const payload = {
@@ -714,12 +692,10 @@
                                 throw new Error('Invalid response structure from Gemini API');
                             }
                         } else if (response.status === 429 || response.status >= 500) {
-                            // Retry on rate limiting or server errors
                             if (i === retries - 1) throw new Error(`API request failed with status ${response.status}`);
                             await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2; // Exponential backoff
+                            delay *= 2;
                         } else {
-                            // Don't retry on other client-side errors
                             throw new Error(`API request failed with status ${response.status}`);
                         }
                     } catch (error) {
@@ -730,23 +706,19 @@
                 }
             }
 
-            // --- 4. Gemini API Call (TTS) ---
             async function callGeminiTTSAPI(textToSpeak) {
-                const apiKey = ""; // API key will be injected by the environment
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
 
-                // Guidance for the voice
                 const prompt = `Say in a friendly, professional, and helpful tone: ${textToSpeak}`;
 
                 const payload = {
-                    contents: [{
-                        parts: [{ text: prompt }]
-                    }],
+                    contents: [{ parts: [{ text: prompt }] }],
                     generationConfig: {
                         responseModalities: ["AUDIO"],
                         speechConfig: {
                             voiceConfig: {
-                                prebuiltVoiceConfig: { voiceName: "Kore" } // A firm, clear voice
+                                prebuiltVoiceConfig: { voiceName: "Kore" }
                             }
                         }
                     },
@@ -783,17 +755,15 @@
                         } else {
                             throw new Error(`TTS API request failed with status ${response.status}`);
                         }
-                    } catch (error) { // <-- FIXED: Added opening brace
+                    } catch (error) {
                         if (i === retries - 1) throw error;
                         await new Promise(resolve => setTimeout(resolve, delay));
                         delay *= 2;
-                    } // <-- FIXED: Added closing brace
+                    }
                 }
             }
             
-            // --- 5. Audio Helper Functions ---
-            
-            // Convert Base64 string to ArrayBuffer
+            // Helpers
             function base64ToArrayBuffer(base64) {
                 const binaryString = window.atob(base64);
                 const len = binaryString.length;
@@ -804,37 +774,32 @@
                 return bytes.buffer;
             }
 
-            // Convert raw PCM16 data to a WAV file (Blob)
             function pcmToWav(pcmData, sampleRate) {
                 const numSamples = pcmData.length;
                 const numChannels = 1;
-                const bytesPerSample = 2; // 16-bit
+                const bytesPerSample = 2;
                 const blockAlign = numChannels * bytesPerSample;
                 const byteRate = sampleRate * blockAlign;
                 const dataSize = numSamples * blockAlign;
                 const buffer = new ArrayBuffer(44 + dataSize);
                 const view = new DataView(buffer);
 
-                // RIFF header
                 writeString(view, 0, 'RIFF');
                 view.setUint32(4, 36 + dataSize, true);
                 writeString(view, 8, 'WAVE');
                 
-                // fmt chunk
                 writeString(view, 12, 'fmt ');
-                view.setUint32(16, 16, true); // chunk size
-                view.setUint16(20, 1, true); // audio format (1 = PCM)
+                view.setUint32(16, 16, true);
+                view.setUint16(20, 1, true);
                 view.setUint16(22, numChannels, true);
                 view.setUint32(24, sampleRate, true);
                 view.setUint32(28, byteRate, true);
                 view.setUint16(32, blockAlign, true);
-                view.setUint16(34, 16, true); // bits per sample
+                view.setUint16(34, 16, true);
                 
-                // data chunk
                 writeString(view, 36, 'data');
                 view.setUint32(40, dataSize, true);
 
-                // Write PCM data
                 for (let i = 0; i < numSamples; i++) {
                     view.setInt16(44 + i * 2, pcmData[i], true);
                 }
@@ -848,7 +813,7 @@
                 }
             }
 
-            // --- 6. Carousel Logic ---
+            // Keep existing gallery carousels running (unchanged)
             function startCarousels() {
                 const carousels = document.querySelectorAll('[data-carousel]');
                 carousels.forEach(carousel => {
@@ -866,18 +831,72 @@
                         showSlide(currentSlide);
                     }
                     
-                    if (slides.length > 1) { // Only start interval if there's more than one slide
-                        setInterval(nextSlide, 5000); // Change slide every 5 seconds
+                    if (slides.length > 1) {
+                        setInterval(nextSlide, 5000);
                     }
                 });
             }
             
             startCarousels();
 
-            // --- Initialize Lucide Icons ---
+            // Initialize Lucide Icons
             lucide.createIcons();
         });
     </script>
+
+    <!-- === HERO BACKGROUND ROTATOR === -->
+    <script>
+    (function setupHeroRotator() {
+      const heroImages = [
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(1).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(2).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(4).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(6).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(7).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(8).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(10).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(11).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(12).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(13).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(14).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(15).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(18).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(19).jpg",
+        "https://cdn.jsdelivr.net/gh/brizzeez1/blacksmith-photos@main/images/hero/hero_1%20(21).jpg"
+      ];
+
+      const container = document.getElementById("hero-bg");
+      if (!container || heroImages.length === 0) return;
+
+      // Create and insert all slide images
+      const slides = heroImages.map((url, idx) => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "Blacksmith Construction hero image";
+        img.className = [
+          "absolute","inset-0","w-full","h-full","object-cover",
+          "transition-opacity","duration-700","ease-in-out","pointer-events-none","select-none"
+        ].join(" ");
+        img.style.opacity = "0"; // hidden initially
+        img.setAttribute("loading", idx === 0 ? "eager" : "lazy");
+        container.appendChild(img);
+        return img;
+      });
+
+      let current = 0;
+      slides[0].style.opacity = "0.5"; // 50% opacity on first image
+
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReducedMotion || slides.length < 2) return;
+
+      setInterval(() => {
+        const prev = slides[current];
+        current = (current + 1) % slides.length;
+        const next = slides[current];
+        prev.style.opacity = "0";
+        next.style.opacity = "0.5"; // keep active at 50%
+      }, 5000);
+    })();
+    </script>
 </body>
 </html>
-
